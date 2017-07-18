@@ -1,0 +1,44 @@
+.trash { color:rgb(209, 91, 71); }
+
+#usersListView p{
+	color:white;
+}
+
+.adminSideNavigation {
+  position: relative;
+  /*height: 300px;*/
+}
+
+.adminCentralView {
+  position: absolute;
+  width: 500px;
+  display: block;
+}
+.adminCentralView-enter,.adminCentralView-leave {
+  -webkit-transition: 600ms linear all;
+  transition: 600ms linear all;
+}
+/*This animation is defined to the new view coming from 500 px from the right and
+animating until the position on the x-axis is 0, leaving the view in the left corner.
+The leaving view goes from the initial position until it is at -1000 px on the x-axis.
+Then, it leaves the DOM. This animation creates a sliding effect; the leaving view
+leaves faster as it has to move double the distance of the entering view in the same
+animation duration.*/
+.adminCentralView-appear {
+	transform: translateX(500px);
+}
+.adminCentralView-appear-active {
+	transform: translateX(0px);	
+}
+.adminCentralView-enter {
+  transform: translateX(500px);
+}
+.adminCentralView-enter-active {
+  transform: translateX(0px);
+}
+.adminCentralView-leave {
+  transform: translateX(0px);
+}
+.adminCentralView-leave-active {
+  transform: translateX(-1000px);
+}
