@@ -11,4 +11,4 @@ const Store = createStore(
     applyMiddleware(thunk, loggerMiddleware)
 );
 
-export Store;
+export store;
