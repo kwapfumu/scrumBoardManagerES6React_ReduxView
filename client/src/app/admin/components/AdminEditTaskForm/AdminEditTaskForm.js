@@ -10,16 +10,22 @@ class AdminEditTaskForm extends Component{
 	constructor(props){
 		super(props);
 	},
-	getTask2Update(){
-		let aTask2Update = {};
-		//talks directly to the store to get the task to update
-		aTask2Update = this.props.getState().backlogTasks.find((task) => task._id === this.props.params.taskId);
-		return aTask2Update;
+	getTask2Update(){		
+		if(this.props.params.taskId){
+			let aTask2Update = {};
+			//talks directly to the store to get the task to update
+			aTask2Update = this.props.getState().backlogTasks.find((task) => task._id === this.props.params.taskId);
+			return aTask2Update;
+		}else{
+			return null;
+		};				
 	},
 	
 	componentWillMount(){
 		let task2Update = this.getTask2Update;
-		this.props.dispatch(draftTaskActionsCreators.createDraftTaskActionCreator(task2Update));
+		if (task2Update !== null){
+			this.props.dispatch(draftTaskActionsCreators.createDraftTaskActionCreator(task2Update));
+		};		
 	},
 	
 	//sets the property:value of draftCard according to each field's user input
