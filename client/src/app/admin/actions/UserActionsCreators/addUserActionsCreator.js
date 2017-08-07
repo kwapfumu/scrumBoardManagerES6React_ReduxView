@@ -3,7 +3,7 @@ import fetch from 'isomorphic-fetch';
 import * as types from '../../../constants/constants';
 import * as api from '../../../constants/ApiConstants';
 import addTempId2newObject from '../../coolReusableFunctions/addTempId2newUser';
-import checkHttpErrorStatus from '../../../checkHttpErrorStatus';
+import fetchResponseHandlerFctr from '../../../fetchResponseHandlerFctr';
 
 
 /**ActionCreators are functions that create actions*/
@@ -39,7 +39,7 @@ function addUserActionsCreator(aUser2Add) {
 			method: 'POST',
 			headers: api.API_HEADERS,
 			body: JSON.stringify(aUser2Add)
-			}).then(checkHttpErrorStatus)
+			}).then(fetchResponseHandlerFctr.checkHttpErrorStatus)
 			  .then((response) => response.json())
 			  .then((json) => dispatch(this.createdUserActionCreator(json)))
 			  .catch((error) => {

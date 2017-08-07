@@ -2,7 +2,7 @@
 import fetch from 'isomorphic-fetch';
 import * as types from '../../../constants/constants';
 import * as api from '../../../constants/ApiConstants';
-
+import fetchResponseHandlerFctr from '../../../fetchResponseHandlerFctr';
 /**ActionCreators are functions that create actions*/
 /**Redux Thunk middleware allows you to write action creators that return a function instead of 
 an action. The thunk can be used to delay the dispatch of an action, or to dispatch only if a 
@@ -37,7 +37,7 @@ function editUserActionsCreator(aUserId, anEditedUser) {
 			method: 'PUT',
 			headers: api.API_HEADERS,
 			body: JSON.stringify(anEditedUser)
-		}).then(checkHttpErrorStatus)
+		}).then(fetchResponseHandlerFctr.checkHttpErrorStatus)
 		   .then((response) => response.json())
 		   .then((json) => dispatch(this.updatedUserActionCreator(aUserId,json)))
 		   .catch((error) => {
