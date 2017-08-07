@@ -14,12 +14,9 @@ class BacklogPanel extends Component{
 	constructor(props){
 		super(props);
 	},
-	/**gets an array of filtered tasks according to user input**/
-	let backlogFilteredTasks = [];
-	Object.assign(backlogFilteredTasks,this.props.allBacklogTasks.filter((task) => { task.taskName === {this.props.filterText}}););
-	
+		
 	render() {		
-		if(this.props.filterText === ''){
+		if(this.props.filterText === '' && this.props.backlogFilteredTasks.length === 0){
 			let backlogPanelsOfTasks = this.props.allBacklogTasks.map((task) => {
 				return <BacklogTaskPanel key={task._id} id={task._id} isAdmin={this.props.isAdmin}
 										 {/*Receiving and Passing the taskCallbacks Prop*/}
@@ -64,6 +61,7 @@ class BacklogPanel extends Component{
 BacklogPanel.propTypes = {
 	isAdmin:PropTypes.bool.isRequired,
 	allBacklogTasks: PropTypes.arrayOf(PropTypes.object),
+	backlogFilteredTasks:PropTypes.arrayOf(PropTypes.object),
 	filterText: PropTypes.string.isRequired,
 	taskCallbacks: PropTypes.object,
 	openAdminEditTaskFormModal: PropTypes.func.isRequired,

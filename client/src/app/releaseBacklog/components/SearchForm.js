@@ -17,11 +17,11 @@ class SearchForm extends Component{
 	
 	getValidationState() {
 		const length = this.state.value.length;
-		if (length > 5) return {
+		if (length > 5 && length < 15) return {
 			'success';			
-		}else if (length > 10) return {
+		}else if (length < 5) return {
 			'warning';
-			this.setState({helpText:'task name should be no longer than 15 characters'});
+			this.setState({helpText:'task name should be no less than 5 characters'});
 		}else if (length > 15) return {
 			'error';
 			this.setState({helpText:'task name should be no longer than 15 characters'});
@@ -35,14 +35,15 @@ class SearchForm extends Component{
 	},	
 	handleKeypress(e){
 		if(e.charCode === 13){
-			this.props.dispatch(searchReleaseBacklogByTasknameActionCreator(this.state.value));
+			this.props.searchReleaseBacklogByTaskname();
 		};
 	},
 	handleSearchButtonClick(){
-		this.props.dispatch(searchReleaseBacklogByTasknameActionCreator(this.props.filterText));
+		this.props.searchReleaseBacklogByTaskname();
 	},
-	handleSubmit(){
-		this.props.dispatch(searchReleaseBacklogByTasknameActionCreator(this.props.filterText));
+	handleSubmit(e){
+		e.preventDefault();
+		this.props.searchReleaseBacklogByTaskname();
 	},
 	render() {
 		return (
@@ -70,7 +71,8 @@ class SearchForm extends Component{
 
 SearchForm.propTypes = {
 	onUserInput: PropTypes.func.isRequired,
-	filterText: PropTypes.string.isRequired
+	filterText: PropTypes.string.isRequired,
+	searchReleaseBacklogByTaskname:PropTypes.func.isRequired
 };
 
 export default SearchForm;

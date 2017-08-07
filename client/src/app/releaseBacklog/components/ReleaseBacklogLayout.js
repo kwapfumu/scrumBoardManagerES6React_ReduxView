@@ -16,27 +16,37 @@ class ReleaseBacklogLayout extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			filterText: '',
 			alertVisible: true,
+			backlogFilteredTasks = [],
+			filterText: '',			
 		};
 	},
-
-	//dispatch fetchTasks when releaseBacklogLayout is mounted to the DOM
+	//returns number of created task when this component mounts
+	getNumberOfCreatedTasks(){
+		let numberOfTasks = this.props.allBacklogTasks.length;
+		return numberOfTasks;
+	},
+	//changes the alertVisible state to show CreateTaskAlert if appropriate
+	handleAlertShow() {
+		if(this.getNumberOfCreatedTasks === 0){
+			this.setState({alertVisible: true});
+		}else{
+			this.setState({alertVisible: false});
+		};		
+	},
+	//dispatches fetchTasks when releaseBacklogLayout is mounted to the DOM & shows CreateTaskAlert if appropriate
 	componentDidMount(){
 		const { dispatch } = this.props;
 		dispatch(fetchTasksActionsCreators.fetchTasks());
+		this.handleAlertShow();
 	},
 	
 	/*componentDidUpdate(prevProps) {
 		if (this.props.backlogTasks !== prevProps.backlogTasks) {
 			const { dispatch } = this.props
-			dispatch(fetchTasks());
+			dispatch(fetchTasksActionsCreators.fetchTasks());
 		}
 	},*/
-	getNumberOfCreatedTasks(){
-		let numberOfTasks = this.props.allBacklogTasks.length;
-		return numberOfTasks;
-	},
 	/**changes the state on user input in SearchForm**/
 	handleUserInput(searchTerm){
 		this.setState({filterText:searchTerm});
@@ -44,13 +54,11 @@ class ReleaseBacklogLayout extends Component{
 	handleAlertDismiss() {
 		this.setState({alertVisible: false});
 	},
-	handleAlertShow() {
-		if(this.getNumberOfCreatedTasks === 0){
-			this.setState({alertVisible: true});
-		}else{
-			this.setState({alertVisible: false});
-		};
-		
+	/**gets an array of filtered tasks according to user input**/
+	getFilteredTasks(){		
+		let filteredTasks = [];
+		Object.assign(filteredTasks,this.props.allBacklogTasks.filter((task) => { task.taskName === {this.state.filterText}}););
+		this.setState({backlogFilteredTasks: filteredTasks});
 	},
 	render() {
 		return (
@@ -61,8 +69,7 @@ class ReleaseBacklogLayout extends Component{
 							<Col xs={6} sm={4} md={4} lg={4} smOffset={3} mdOffset={5} lgOffset={5} >    
 								{/* alertbox  */}
 								<CreateTaskAlert isAdmin={this.props.isAdmin}
-								                 alertVisible={this.state.alertVisible}
-								                 showCreateTaskAlert={this.handleAlertShow.bind(this)}
+								                 alertVisible={this.state.alertVisible}								                 
 												 handleOnDismiss={this.handleAlertDismiss.bind(this)}/>						
 								{/* /alertbox  */}
 							</Col>
@@ -75,10 +82,10 @@ class ReleaseBacklogLayout extends Component{
 						{/* searchbox */}
 						{/*whenever the user changes the search form, you update the state to reflect the user input. 
 						Since components should only update their own state, ReleaseBacklogLayout will pass a callback(handleUserInput()) 
-						to SearchForm that will fire whenever the state should be updated. You can use the onChange event on the inputs
-						to be notified of it. On the ReleaseBacklogLayout, you create a local function to change the filterText state and
-						pass this function down as a prop to the searchForm*/}
-						<SearchForm filterText={this.state.filterText} onUserInput={this.handleUserInput.bind(this)}/>
+						to SearchForm that will fire whenever the state should be updated.*/}
+						<SearchForm filterText={this.state.filterText} 
+						            onUserInput={this.handleUserInput.bind(this)}
+									searchReleaseBacklogByTaskname={this.getFilteredTasks.bind(this)}/>
 						{/* /searchbox */}
 					</Row>
 					<Row>
@@ -87,7 +94,8 @@ class ReleaseBacklogLayout extends Component{
 											  openAdminAddTaskFormModal={this.props.openAdminAddTaskFormModal}/>						   
 						{/* BacklogPanel */}
 						<BacklogPanel allBacklogTasks={this.props.allBacklogTasks}
-						              filterText={this.state.filterText}									  
+						              backlogFilteredTasks={this.props.backlogFilteredTasks}
+									  filterText={this.state.filterText}
 									  openAdminEditTaskFormModal={this.props.openAdminEditTaskFormModal}
 									  taskCallbacks={this.props.taskCallbacks}/>
 					</Row>			
