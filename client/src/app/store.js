@@ -5,8 +5,8 @@ import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './rootReducer';
 
 // neat middleware that logs actions
-const loggerMiddleware = createLogger()
-const Store = createStore(
+const loggerMiddleware = createLogger();
+const store = createStore(
 	rootReducer,
     applyMiddleware(thunk, loggerMiddleware)
 );
