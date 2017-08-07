@@ -2,14 +2,9 @@
 import fetch from 'isomorphic-fetch';
 import * as types from '../../../constants/constants';
 import * as api from '../../../constants/ApiConstants';
+import fetchResponseHandlerFctr from '../../../fetchResponseHandlerFctr';
 
-/**ActionCreators are functions that create actions*/
-/**Redux Thunk middleware allows you to write action creators that return a function instead of 
-an action. The thunk can be used to delay the dispatch of an action, or to dispatch only if a 
-certain condition is met. The inner function receives the store methods 'dispatch' and 'getState'
-as parameters.*/
-
-	
+/**ActionCreators are functions that create actions*/	
 function updateTaskActionCreator(aTaskId){
 	return {
 		type: types.UPDATE_TASK,		
@@ -37,9 +32,9 @@ function editTaskActionsCreator(aTaskId, anEditedTask) {
 			method: 'PUT',
 			headers: api.API_HEADERS,
 			body: JSON.stringify(anEditedTask)
-		}).then(checkHttpErrorStatus)
+		}).then(fetchResponseHandlerFctr.checkHttpErrorStatus)
 		   .then((response) => response.json())
-		   .then((json) => dispatch(this.updatedTaskActionCreator(aTaskId,json)))
+		   .then((json) => dispatch(updatedTaskActionCreator(aTaskId,json)))
 		   .catch((error) => {
 				dispatch(updateTaskFailedActionCreator(error));
 					console.log('Error editing task', error);

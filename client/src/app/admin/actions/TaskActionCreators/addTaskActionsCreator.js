@@ -2,9 +2,7 @@
 import fetch from 'isomorphic-fetch';
 import * as types from '../../../constants/constants';
 import * as api from '../../../constants/ApiConstants';
-import checkHttpErrorStatus from '../../../checkHttpErrorStatus';
-
-
+import fetchResponseHandlerFctr from '../../../fetchResponseHandlerFctr';
 
 /**ActionCreators are functions that create actions*/
 /**createTaskActionCreator informs taskReducer that a addtask/createTask request began*/
@@ -38,11 +36,11 @@ function addTaskActionsCreator(aTask2Add) {
 			method: 'POST',
 			headers: api.API_HEADERS,
 			body: JSON.stringify(aTask2Add)
-			}).then(checkHttpErrorStatus)
+			}).then(fetchResponseHandlerFctr.checkHttpErrorStatus)
 			  .then((response) => response.json())
-			  .then((json) => dispatch(this.createdTaskActionCreator(json)))
+			  .then((json) => dispatch(createdTaskActionCreator(json)))
 			  .catch((error) => {
-				dispatch(this.createTaskFailedActionCreator(error));
+				dispatch(createTaskFailedActionCreator(error));
 				console.log('Error fetching data', error);
 			  });	
 	};
