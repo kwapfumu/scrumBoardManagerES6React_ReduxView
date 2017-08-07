@@ -5,7 +5,7 @@ from completing. By default, fetch won't send or receive any cookies from the se
 requests if the site relies on maintaining a user session.*/
  /**To have fetch Promise reject on HTTP error statuses, i.e. on any non-2xx status, define a custom response handler:*/
  "use strict";
- function fetchResponseHandlerFctr(){
+ const fetchResponseHandlerFctr = function fetchResponseHandlerFctr(){
 	return{
 		checkHttpErrorStatus: function checkHttpErrorStatus(response) {
 			if (response.status >= 200 && response.status < 300) {
